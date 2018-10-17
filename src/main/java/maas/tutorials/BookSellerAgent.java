@@ -22,8 +22,21 @@ public class BookSellerAgent extends Agent {
         // ist das so richtig?
         myGui.setAgent(this);
         myGui.show();
+        Object[] oArguments = getArguments();
+        String[] sSplit;
         // muss noch implementiert werden
-        updateCatalogue("The-Lord-of-the-rings", 10);
+//        System.out.println(oArguments[0].toString());
+//        System.out.println(oArguments[1].toString());
+        for (Object oArgument:
+             oArguments) {
+            String oArgument1 = (String) oArgument;
+            sSplit = oArgument1.split(" ");
+            Book b = new Book(sSplit[0], Integer.valueOf(sSplit[1]), Integer.valueOf(sSplit[2]));
+            updateCatalogue(b);
+
+        }
+//        updateCatalogue((String) oArguments[0], 10);
+//        updateCatalogue((String) oArguments[1], 10);
          addBehaviour(new OfferRequestServer());
 //         addBehaviour(new PurchaseOrdersServer());
         DFAgentDescription dfd = new DFAgentDescription();
@@ -48,11 +61,11 @@ public class BookSellerAgent extends Agent {
         myGui.dispose();
         System.out.println("Seller Agent" + getAID().getName() + "terminating");
     }
-    public void updateCatalogue(final String title, final int price){
+    public void updateCatalogue(final Book bK){
         addBehaviour(new OneShotBehaviour() {
             @Override
             public void action() {
-                catalogue.put(title, new Integer(price));
+                catalogue.put(bK.getsBookTitle(), new Book(bK.getsBookTitle(), bK.getiQuantity(), bK.getiPrice()));
             }
         });
     }
@@ -66,7 +79,8 @@ public class BookSellerAgent extends Agent {
             if(msg != null){
                 String title = msg.getContent();
                 ACLMessage reply = msg.createReply();
-                Integer price = (Integer) catalogue.get(title);
+                Book b = (Book)catalogue.get(title);
+                Integer price = b.getiPrice();
                 if(price != null) {
                     reply.setPerformative(ACLMessage.PROPOSE);
                     reply.setContent(String.valueOf(price.intValue()));

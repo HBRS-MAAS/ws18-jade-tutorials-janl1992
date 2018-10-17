@@ -18,7 +18,7 @@ public class BookBuyerAgent extends Agent {
 	private AID[] sellerAgents = {new AID("seller1", AID.ISLOCALNAME), new AID("seller2", AID.ISLOCALNAME)};
 	private BookBuyerGui myGui;
 	protected void setup() {
-		System.out.println("Hello! BookBuyerAgent" + getAID().getName() + "is ready.");
+		System.out.println("Hello! BookBuyerAgent" + getAID().getName() + "is ready - waiting 30 seconds to start behaviour");
 		Object[] oArguments = getArguments();
 		myGui = new BookBuyerGuiImpl();
 		myGui.setAgent(this);
@@ -26,7 +26,7 @@ public class BookBuyerAgent extends Agent {
 		if (oArguments != null && oArguments.length > 0) {
 			targetBookTitle = (String) oArguments[0];
 			System.out.println("Trying to buy " + targetBookTitle);
-			addBehaviour(new TickerBehaviour(this, 60000) {
+			addBehaviour(new TickerBehaviour(this, 30000) {
 				@Override
 				protected void onTick() {
 					DFAgentDescription template = new DFAgentDescription();
