@@ -2,7 +2,9 @@
 
 # Jade Tutorials
 
-Make sure to keep this README updated, particularly on how to run your project from the **command line**.
+Make sure to keep this README updated, particularly on how to run your project from the commandline. Start the application by help of the jar file . Switch into project folder "ws18-jade-tutorials-janl1992" and run the command: 
+
+"java -jar ws18-jade-tutorials-janl1992.jar"
 
 
 ## Dependencies
