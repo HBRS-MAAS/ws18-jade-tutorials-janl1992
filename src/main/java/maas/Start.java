@@ -7,7 +7,8 @@ import maas.tutorials.BookBuyerAgent;
 public class Start {
     public static void main(String[] args) {
     	List<String> agents = new Vector<>();
-    	agents.add("tester:maas.tutorials.BookBuyerAgent");
+    	agents.add("testerbuyer:maas.tutorials.BookBuyerAgent(The-Lord-of-the-rings)");
+    	agents.add("testerseller:maas.tutorials.BookSellerAgent");
 
     	List<String> cmd = new Vector<>();
     	cmd.add("-agents");
