@@ -14,10 +14,10 @@ public class Start {
 	private static final int iNumberofBookBuyerAgents = 30;
 	private static final int iNumberofTitle = 4;
 	private static Random rand = new Random();
-	private static final Book[][] sbooks= new Book[][]{{new Book(sBooktitle[0], -1, rand.nextInt(10) + 1), new Book(sBooktitle[1], 10, rand.nextInt(10) + 1), new Book(sBooktitle[2], 10, rand.nextInt(10) + 1), new Book(sBooktitle[3], -1, rand.nextInt(10) + 1)},
-			{new Book(sBooktitle[0], 10, rand.nextInt(10) + 1), new Book(sBooktitle[1], 10, rand.nextInt(10) + 1), new Book(sBooktitle[2], 10, rand.nextInt(10) + 1), new Book(sBooktitle[3], -1, rand.nextInt(10) + 1)},
-			{new Book(sBooktitle[0], 10, rand.nextInt(10) + 1), new Book(sBooktitle[1], 10, rand.nextInt(10) + 1), new Book(sBooktitle[2], 10, rand.nextInt(10) + 1), new Book(sBooktitle[3], -1, rand.nextInt(10) + 1)},
-			{new Book(sBooktitle[0], 10, rand.nextInt(10) + 1), new Book(sBooktitle[1], 10, rand.nextInt(10) + 1), new Book(sBooktitle[2], 10, rand.nextInt(10) + 1), new Book(sBooktitle[3], -1, rand.nextInt(10) + 1)}};
+	private static final Book[][] sbooks= new Book[][]{{new Book(sBooktitle[0], -1, rand.nextInt(10) + 1), new Book(sBooktitle[1], 3, rand.nextInt(10) + 1), new Book(sBooktitle[2], 10, rand.nextInt(10) + 1), new Book(sBooktitle[3], -1, rand.nextInt(10) + 1)},
+			{new Book(sBooktitle[0], 3, rand.nextInt(10) + 1), new Book(sBooktitle[1], 3, rand.nextInt(10) + 1), new Book(sBooktitle[2], 3, rand.nextInt(10) + 1), new Book(sBooktitle[3], -1, rand.nextInt(10) + 1)},
+			{new Book(sBooktitle[0], 3, rand.nextInt(10) + 1), new Book(sBooktitle[1], 3, rand.nextInt(10) + 1), new Book(sBooktitle[2], 3, rand.nextInt(10) + 1), new Book(sBooktitle[3], -1, rand.nextInt(10) + 1)},
+			{new Book(sBooktitle[0], 3, rand.nextInt(10) + 1), new Book(sBooktitle[1], 3, rand.nextInt(10) + 1), new Book(sBooktitle[2], 3, rand.nextInt(10) + 1), new Book(sBooktitle[3], -1, rand.nextInt(10) + 1)}};
     public static void main(String[] args) {
     	List<String> agents = new Vector<>();
 //		String [][] sbooks= new String [][]{{new Book()}};

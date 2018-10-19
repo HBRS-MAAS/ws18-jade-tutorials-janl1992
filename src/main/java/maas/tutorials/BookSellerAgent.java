@@ -80,17 +80,18 @@ public class BookSellerAgent extends Agent {
                 String title = msg.getContent();
                 ACLMessage reply = msg.createReply();
                 Integer price = null;
-                if (catalogue.get(title) != null) {
+                if (catalogue.get(title) != null ) {
                     Book b = (Book)catalogue.get(title);
                     price = b.getiPrice();
-                    if(price != null) {
+                    if(price != null && b.getiQuantity() != 0) {
                         reply.setPerformative(ACLMessage.PROPOSE);
                         reply.setContent(String.valueOf(price.intValue()));
+                    } else {
+                        refuseoffer(reply);
                     }
                 }
                 else {
-                    reply.setPerformative(ACLMessage.REFUSE);
-                    reply.setContent("not-available");
+                    refuseoffer(reply);
                 }
 //                if(MessageTemplate.MatchPerformative(msg.getPerformative()))
 
@@ -102,7 +103,7 @@ public class BookSellerAgent extends Agent {
             if(msg != null && msg.getPerformative() == ACLMessage.ACCEPT_PROPOSAL){
                 String sTitleBuy = msg.getContent();
                 Book bTarget = (Book) catalogue.get(sTitleBuy);
-                if(bTarget.getiQuantity() != (-1) && bTarget.getiQuantity() > 0){
+                if(bTarget.getiQuantity() != (-1) && bTarget.getiQuantity() != 0){
                     int iQuantity = bTarget.getiQuantity();
                     bTarget.setiQuantity(iQuantity - 1);
                 }
@@ -111,11 +112,22 @@ public class BookSellerAgent extends Agent {
                 aclTargetReply.setPerformative(ACLMessage.INFORM);
                 aclTargetReply.setContent(String.valueOf(bTarget.getiPrice()));
                 myAgent.send(aclTargetReply);
-                if(catalogue.size() == 0){
-                    myAgent.doDelete();
+                for (Object oBook:
+                     catalogue.values()) {
+                    Book b = (Book) oBook;
+                    if(b.getiQuantity() == 0){
+                        doDelete();
+                        break;
+                    }
+
                 }
             }
         }
     }
+
+    private void refuseoffer(ACLMessage reply) {
+        reply.setPerformative(ACLMessage.REFUSE);
+        reply.setContent("not-available");
     }
+}
 
