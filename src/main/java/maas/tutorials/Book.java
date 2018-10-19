@@ -1,6 +1,10 @@
 package maas.tutorials;
 
 public class Book {
+    public void setiQuantity(int iQuantity) {
+        this.iQuantity = iQuantity;
+    }
+
     private String sBookTitle;
     private int iQuantity;
     private int iPrice;

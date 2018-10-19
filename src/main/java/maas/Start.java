@@ -1,6 +1,7 @@
 package maas;
 
 import java.util.List;
+import java.util.Random;
 import java.util.Vector;
 
 import maas.tutorials.Book;
@@ -8,18 +9,27 @@ import maas.tutorials.Book;
 public class Start {
 	private static final String sconstseller = "maas.tutorials.BookSellerAgent";
 	private static final String sconstbuyer = "maas.tutorials.BookBuyerAgent";
-	private static final int iNumberofBookSellerAgents = 2;
+	private static final String [] sBooktitle = new String[]{"The-Lord-of-the-rings", "The-Lord-of-the-rings-2", "The-Lord-of-the-rings-3", "Harry-Potter-1"};
+	private static final int iNumberofBookSellerAgents = 4;
+	private static final int iNumberofBookBuyerAgents = 30;
 	private static final int iNumberofTitle = 4;
-	private static final Book[][] sbooks= new Book[][]{{new Book("The-Lord-of-the-rings", -1, 5), new Book("The-Lord-of-the-rings-2", 10, 10), new Book("The-Lord-of-the-rings-3", 10, 15), new Book("Harry-Potter-1", -1, 20)},
-			{new Book("The-Lord-of-the-rings", 10, 3), new Book("The-Lord-of-the-rings-2", 10, 5), new Book("The-Lord-of-the-rings-3", 10, 15), new Book("Harry-Potter-1", -1, 20)}};
+	private static Random rand = new Random();
+	private static final Book[][] sbooks= new Book[][]{{new Book(sBooktitle[0], -1, rand.nextInt(10) + 1), new Book(sBooktitle[1], 10, rand.nextInt(10) + 1), new Book(sBooktitle[2], 10, rand.nextInt(10) + 1), new Book(sBooktitle[3], -1, rand.nextInt(10) + 1)},
+			{new Book(sBooktitle[0], 10, rand.nextInt(10) + 1), new Book(sBooktitle[1], 10, rand.nextInt(10) + 1), new Book(sBooktitle[2], 10, rand.nextInt(10) + 1), new Book(sBooktitle[3], -1, rand.nextInt(10) + 1)},
+			{new Book(sBooktitle[0], 10, rand.nextInt(10) + 1), new Book(sBooktitle[1], 10, rand.nextInt(10) + 1), new Book(sBooktitle[2], 10, rand.nextInt(10) + 1), new Book(sBooktitle[3], -1, rand.nextInt(10) + 1)},
+			{new Book(sBooktitle[0], 10, rand.nextInt(10) + 1), new Book(sBooktitle[1], 10, rand.nextInt(10) + 1), new Book(sBooktitle[2], 10, rand.nextInt(10) + 1), new Book(sBooktitle[3], -1, rand.nextInt(10) + 1)}};
     public static void main(String[] args) {
     	List<String> agents = new Vector<>();
 //		String [][] sbooks= new String [][]{{new Book()}};
-    	agents.add("testerbuyer:"+ sconstbuyer +"(The-Lord-of-the-rings)");
+//    	agents.add("testerbuyer:"+ sconstbuyer +"(The-Lord-of-the-rings)");
 //    	agents.add("testerseller:"+sconstseller+"(The-Lord-of-the-rings, The-Lord-of-the-rings2)");
     	StringBuffer sbSeller = new StringBuffer();
 		String sAgent = null;
     	// building inputstring
+
+		for(int i = 0; i < iNumberofBookBuyerAgents; i++){
+			agents.add("testerbuyer"+i+":"+ sconstbuyer +"("+sBooktitle[rand.nextInt(4)]+")");
+		}
 		for(int i = 0; i < iNumberofBookSellerAgents; i++){
 			sbSeller.append("selleragent" + i + ":" + sconstseller + "(");
 			for(int j = 0; j < iNumberofTitle; j++){

@@ -21,7 +21,7 @@ public class BookSellerAgent extends Agent {
         myGui = new BookSellerGuiImpl();
         // ist das so richtig?
         myGui.setAgent(this);
-        myGui.show();
+//        myGui.show();
         Object[] oArguments = getArguments();
         String[] sSplit;
         // muss noch implementiert werden
@@ -58,7 +58,7 @@ public class BookSellerAgent extends Agent {
         } catch (FIPAException e) {
             e.printStackTrace();
         }
-        myGui.dispose();
+//        myGui.dispose();
         System.out.println("Seller Agent" + getAID().getName() + "terminating");
     }
     public void updateCatalogue(final Book bK){
@@ -74,23 +74,47 @@ public class BookSellerAgent extends Agent {
 
         @Override
         public void action() {
-            MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.CFP);
+//            MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.CFP);
             ACLMessage msg = myAgent.receive();
-            if(msg != null){
+            if(msg != null && (msg.getPerformative() == ACLMessage.CFP)){
                 String title = msg.getContent();
                 ACLMessage reply = msg.createReply();
-                Book b = (Book)catalogue.get(title);
-                Integer price = b.getiPrice();
-                if(price != null) {
-                    reply.setPerformative(ACLMessage.PROPOSE);
-                    reply.setContent(String.valueOf(price.intValue()));
+                Integer price = null;
+                if (catalogue.get(title) != null) {
+                    Book b = (Book)catalogue.get(title);
+                    price = b.getiPrice();
+                    if(price != null) {
+                        reply.setPerformative(ACLMessage.PROPOSE);
+                        reply.setContent(String.valueOf(price.intValue()));
+                    }
                 }
                 else {
                     reply.setPerformative(ACLMessage.REFUSE);
                     reply.setContent("not-available");
                 }
+//                if(MessageTemplate.MatchPerformative(msg.getPerformative()))
+
                 myAgent.send(reply);
-            } else {block();}
+            }
+            else {
+                block();
+            }
+            if(msg != null && msg.getPerformative() == ACLMessage.ACCEPT_PROPOSAL){
+                String sTitleBuy = msg.getContent();
+                Book bTarget = (Book) catalogue.get(sTitleBuy);
+                if(bTarget.getiQuantity() != (-1) && bTarget.getiQuantity() > 0){
+                    int iQuantity = bTarget.getiQuantity();
+                    bTarget.setiQuantity(iQuantity - 1);
+                }
+                updateCatalogue(bTarget);
+                ACLMessage aclTargetReply = msg.createReply();
+                aclTargetReply.setPerformative(ACLMessage.INFORM);
+                aclTargetReply.setContent(String.valueOf(bTarget.getiPrice()));
+                myAgent.send(aclTargetReply);
+                if(catalogue.size() == 0){
+                    myAgent.doDelete();
+                }
+            }
         }
     }
     }

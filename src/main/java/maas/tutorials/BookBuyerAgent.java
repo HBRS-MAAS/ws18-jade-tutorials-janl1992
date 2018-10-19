@@ -15,18 +15,18 @@ import java.util.Date;
 
 public class BookBuyerAgent extends Agent {
 	private String targetBookTitle;
-	private AID[] sellerAgents = {new AID("seller1", AID.ISLOCALNAME), new AID("seller2", AID.ISLOCALNAME)};
+	private AID[] sellerAgents;
 	private BookBuyerGui myGui;
 	protected void setup() {
-		System.out.println("Hello! BookBuyerAgent" + getAID().getName() + "is ready - waiting 30 seconds to start behaviour");
+		System.out.println("Hello! BookBuyerAgent" + getAID().getName() + "is ready - waiting 10 seconds to start behaviour");
 		Object[] oArguments = getArguments();
 		myGui = new BookBuyerGuiImpl();
 		myGui.setAgent(this);
-		myGui.show();
+//		myGui.show();
 		if (oArguments != null && oArguments.length > 0) {
 			targetBookTitle = (String) oArguments[0];
 			System.out.println("Trying to buy " + targetBookTitle);
-			addBehaviour(new TickerBehaviour(this, 30000) {
+			addBehaviour(new TickerBehaviour(this, 10000) {
 				@Override
 				protected void onTick() {
 					DFAgentDescription template = new DFAgentDescription();
@@ -36,7 +36,7 @@ public class BookBuyerAgent extends Agent {
 					try {
 						DFAgentDescription[] result = DFService.search(myAgent, template);
 						sellerAgents = new AID[result.length];
-						System.out.println(sellerAgents.length);
+//						System.out.println(sellerAgents.length);
 						for (int i = 0; i < result.length; ++i){
 							sellerAgents[i] = result[i].getName();
 						}
@@ -112,7 +112,7 @@ public class BookBuyerAgent extends Agent {
 				case 3:
 					reply = myAgent.receive(mt);
 					if(reply != null){
-						if(reply.getPerformative() == ACLMessage.PROPOSE){
+						if(reply.getPerformative() == ACLMessage.INFORM){
 							System.out.println(targetBookTitle + "successfully purchased");
 							System.out.println("Price = " + bestPrice);
 							myAgent.doDelete();
