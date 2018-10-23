@@ -113,7 +113,7 @@ public class BookBuyerAgent extends Agent {
 					reply = myAgent.receive(mt);
 					if(reply != null){
 						if(reply.getPerformative() == ACLMessage.INFORM){
-							System.out.println(targetBookTitle + "successfully purchased");
+							System.out.println(targetBookTitle + " successfully purchased");
 							System.out.println("Price = " + bestPrice);
 							myAgent.doDelete();
 						}

@@ -59,7 +59,7 @@ public class BookSellerAgent extends Agent {
             e.printStackTrace();
         }
 //        myGui.dispose();
-        System.out.println("Seller Agent" + getAID().getName() + "terminating");
+//        System.out.println("Seller Agent" + getAID().getName() + "terminating");
     }
     public void updateCatalogue(final Book bK){
         addBehaviour(new OneShotBehaviour() {
@@ -116,6 +116,7 @@ public class BookSellerAgent extends Agent {
                      catalogue.values()) {
                     Book b = (Book) oBook;
                     if(b.getiQuantity() == 0){
+                        System.out.println(getAID().getName() + " is terminated as quantity of " + b.getsBookTitle() + " is 0");
                         doDelete();
                         break;
                     }
