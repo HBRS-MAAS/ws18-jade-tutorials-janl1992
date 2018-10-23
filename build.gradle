@@ -16,6 +16,21 @@ repositories {
         url 'http://jade.tilab.com/maven/'
     }
 }
+//configurations {
+//    // configuration that holds jars to include in the jar
+//}
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'maas.Start'
+        )
+    }
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    destinationDir=file("$rootDir")
+}
 
  dependencies {
     compile group: 'com.tilab.jade', name: 'jade', version: '4.5.+'
