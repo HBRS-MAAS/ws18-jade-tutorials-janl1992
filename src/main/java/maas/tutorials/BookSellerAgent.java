@@ -14,19 +14,11 @@ import java.util.Hashtable;
 
 public class BookSellerAgent extends Agent {
     private Hashtable catalogue;
-    private BookSellerGui myGui;
 
     protected void setup() {
         catalogue = new Hashtable();
-        myGui = new BookSellerGuiImpl();
-        // ist das so richtig?
-        myGui.setAgent(this);
-//        myGui.show();
         Object[] oArguments = getArguments();
         String[] sSplit;
-        // muss noch implementiert werden
-//        System.out.println(oArguments[0].toString());
-//        System.out.println(oArguments[1].toString());
         for (Object oArgument:
              oArguments) {
             String oArgument1 = (String) oArgument;
@@ -35,10 +27,7 @@ public class BookSellerAgent extends Agent {
             updateCatalogue(b);
 
         }
-//        updateCatalogue((String) oArguments[0], 10);
-//        updateCatalogue((String) oArguments[1], 10);
          addBehaviour(new OfferRequestServer());
-//         addBehaviour(new PurchaseOrdersServer());
         DFAgentDescription dfd = new DFAgentDescription();
         dfd.setName(getAID());
         ServiceDescription sd = new ServiceDescription();
@@ -58,8 +47,6 @@ public class BookSellerAgent extends Agent {
         } catch (FIPAException e) {
             e.printStackTrace();
         }
-//        myGui.dispose();
-//        System.out.println("Seller Agent" + getAID().getName() + "terminating");
     }
     public void updateCatalogue(final Book bK){
         addBehaviour(new OneShotBehaviour() {
