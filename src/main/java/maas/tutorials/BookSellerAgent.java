@@ -14,14 +14,9 @@ import java.util.Hashtable;
 
 public class BookSellerAgent extends Agent {
     private Hashtable catalogue;
-    private BookSellerGui myGui;
 
     protected void setup() {
         catalogue = new Hashtable();
-        myGui = new BookSellerGuiImpl();
-        // ist das so richtig?
-        myGui.setAgent(this);
-//        myGui.show();
         Object[] oArguments = getArguments();
         String[] sSplit;
         // muss noch implementiert werden
@@ -58,7 +53,6 @@ public class BookSellerAgent extends Agent {
         } catch (FIPAException e) {
             e.printStackTrace();
         }
-//        myGui.dispose();
 //        System.out.println("Seller Agent" + getAID().getName() + "terminating");
     }
     public void updateCatalogue(final Book bK){

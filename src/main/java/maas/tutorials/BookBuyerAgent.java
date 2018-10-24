@@ -16,13 +16,9 @@ import java.util.Date;
 public class BookBuyerAgent extends Agent {
 	private String targetBookTitle;
 	private AID[] sellerAgents;
-	private BookBuyerGui myGui;
 	protected void setup() {
 		System.out.println("Hello! BookBuyerAgent" + getAID().getName() + "is ready - waiting 10 seconds to start behaviour");
 		Object[] oArguments = getArguments();
-		myGui = new BookBuyerGuiImpl();
-		myGui.setAgent(this);
-//		myGui.show();
 		if (oArguments != null && oArguments.length > 0) {
 			targetBookTitle = (String) oArguments[0];
 			System.out.println("Trying to buy " + targetBookTitle);
@@ -147,7 +143,6 @@ public class BookBuyerAgent extends Agent {
 			long currentTime = System.currentTimeMillis();
 			if (currentTime > deadline) {
 				// Deadline expired
-				myGui.notifyUser("Cannot buy book "+title);
 				stop();
 			}
 			else {
