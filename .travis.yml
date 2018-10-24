@@ -4,3 +4,4 @@ jdk:
 group: stable
 dist: trusty
 os: linux
+gradle: run
