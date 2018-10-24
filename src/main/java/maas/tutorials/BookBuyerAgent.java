@@ -11,8 +11,6 @@ import jade.domain.FIPAException;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 
-import java.util.Date;
-
 public class BookBuyerAgent extends Agent {
 	private String targetBookTitle;
 	private AID[] sellerAgents;
@@ -32,7 +30,6 @@ public class BookBuyerAgent extends Agent {
 					try {
 						DFAgentDescription[] result = DFService.search(myAgent, template);
 						sellerAgents = new AID[result.length];
-//						System.out.println(sellerAgents.length);
 						for (int i = 0; i < result.length; ++i){
 							sellerAgents[i] = result[i].getName();
 						}
@@ -48,11 +45,6 @@ public class BookBuyerAgent extends Agent {
 		}
 	}
 
-	public void setCreditCard(String creditCardNumber){}
-	public void purchase(String title, int maxPrice, Date deadline) {
-		// the following line is in the book at page 62
-		addBehaviour(new PurchaseManager(this, title, maxPrice, deadline));
-	}
 	protected void takeDown() {
 		System.out.println("BookBuyerAgent" + getAID().getName() + "terminating");
 	}
@@ -125,35 +117,6 @@ public class BookBuyerAgent extends Agent {
 			return ((step == 2 && bestSeller == null) || step == 4);
 		}
 	}
-	private class PurchaseManager extends TickerBehaviour {
-		private String title;
-		private int maxPrice;
-		private long deadline, initTime, deltaT;
-
-		private PurchaseManager(Agent a, String t, int mp, Date d) {
-			super(a, 60000); // tick every minute
-			title = t;
-			maxPrice = mp;
-			deadline = d.getTime();
-			initTime = System.currentTimeMillis();
-			deltaT = deadline - initTime;
-		}
-
-		public void onTick() {
-			long currentTime = System.currentTimeMillis();
-			if (currentTime > deadline) {
-				// Deadline expired
-				stop();
-			}
-			else {
-				// Compute the currently acceptable price and start a negotiation
-				long elapsedTime = currentTime - initTime;
-				int acceptablePrice = (int)Math.round(1.0 * maxPrice * (1.0 * elapsedTime / deltaT));
-//                myAgent.addBehaviour(new BookNegotiator(title, acceptablePrice, this));
-			}
-		}
-	}
-
 
 }
 
