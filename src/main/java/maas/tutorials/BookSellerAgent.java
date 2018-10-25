@@ -27,7 +27,7 @@ public class BookSellerAgent extends Agent {
             updateCatalogue(b);
 
         }
-         addBehaviour(new OfferRequestServer());
+        addBehaviour(new OfferRequestServer());
         DFAgentDescription dfd = new DFAgentDescription();
         dfd.setName(getAID());
         ServiceDescription sd = new ServiceDescription();
@@ -99,16 +99,16 @@ public class BookSellerAgent extends Agent {
                 aclTargetReply.setPerformative(ACLMessage.INFORM);
                 aclTargetReply.setContent(String.valueOf(bTarget.getiPrice()));
                 myAgent.send(aclTargetReply);
-                for (Object oBook:
-                     catalogue.values()) {
-                    Book b = (Book) oBook;
-                    if(b.getiQuantity() == 0){
-                        System.out.println(getAID().getName() + " is terminated as quantity of " + b.getsBookTitle() + " is 0");
-                        doDelete();
-                        break;
-                    }
-
-                }
+//                for (Object oBook:
+//                     catalogue.values()) {
+//                    Book b = (Book) oBook;
+//                    if(b.getiQuantity() == 0){
+//                        System.out.println(getAID().getName() + " is terminated as quantity of " + b.getsBookTitle() + " is 0");
+//                        doDelete();
+//                        break;
+//                    }
+//
+//                }
             }
         }
     }

@@ -22,9 +22,9 @@ public class Book {
         return iPrice;
     }
 
-    public Book(String sBookTitle, int iType, int iPrice) {
+    public Book(String sBookTitle, int iQuantity, int iPrice) {
         this.sBookTitle = sBookTitle;
-        this.iQuantity = iType;
+        this.iQuantity = iQuantity;
         this.iPrice = iPrice;
     }
 }
