@@ -1,12 +1,19 @@
 package maas.tutorials;
 
+import jade.content.lang.Codec;
+import jade.content.lang.sl.SLCodec;
+import jade.content.onto.basic.Action;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.core.behaviours.OneShotBehaviour;
+import jade.core.behaviours.TickerBehaviour;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
+import jade.domain.FIPANames;
+import jade.domain.JADEAgentManagement.JADEManagementOntology;
+import jade.domain.JADEAgentManagement.ShutdownPlatform;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 
@@ -14,10 +21,12 @@ import java.util.Hashtable;
 
 public class BookSellerAgent extends Agent {
     private Hashtable catalogue;
+    private long lCurrentTime;
 
     protected void setup() {
         catalogue = new Hashtable();
         Object[] oArguments = getArguments();
+        lCurrentTime = System.currentTimeMillis();
         String[] sSplit;
         for (Object oArgument:
              oArguments) {
@@ -27,6 +36,29 @@ public class BookSellerAgent extends Agent {
             updateCatalogue(b);
 
         }
+        addBehaviour(new TickerBehaviour(this, 10000) {
+            @Override
+            protected void onTick() {
+                long lDiff = System.currentTimeMillis() - lCurrentTime;
+                System.out.println(lDiff);
+                if(lDiff > 30000){
+                    ACLMessage aclmShutDownMessage = new ACLMessage(ACLMessage.REQUEST);
+                    Codec codec = new SLCodec();
+                    myAgent.getContentManager().registerLanguage(codec);
+                    myAgent.getContentManager().registerOntology(JADEManagementOntology.getInstance());
+                    aclmShutDownMessage.addReceiver(myAgent.getAMS());
+                    aclmShutDownMessage.setLanguage(FIPANames.ContentLanguage.FIPA_SL);
+                    aclmShutDownMessage.setOntology(JADEManagementOntology.getInstance().getName());
+                    try {
+                        myAgent.getContentManager().fillContent(aclmShutDownMessage,new Action(myAgent.getAID(), new ShutdownPlatform()));
+                        myAgent.send(aclmShutDownMessage);
+                    }
+                    catch (Exception e) {
+                        System.out.println(e.getStackTrace());
+                    }
+                }
+            }
+        });
         addBehaviour(new OfferRequestServer());
         DFAgentDescription dfd = new DFAgentDescription();
         dfd.setName(getAID());
@@ -63,6 +95,7 @@ public class BookSellerAgent extends Agent {
         public void action() {
 //            MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.CFP);
             ACLMessage msg = myAgent.receive();
+//            if (lDiff > 60000)
             if(msg != null && (msg.getPerformative() == ACLMessage.CFP)){
                 String title = msg.getContent();
                 ACLMessage reply = msg.createReply();
